@@ -6,7 +6,7 @@ module "ubuntu" {
   vpc_security_group_ids = module.security_group.security_id
   region                 = var.region
   tags = {
-    "Name" = "windows-${local.name}-${module.unique_name.unique}"
+    "Name" = "EC2-Ubuntu-${local.name}"
   }
   user_data = file("${path.module}/scripts/ubuntu.sh")
 }
@@ -19,7 +19,7 @@ module "amazon-linux" {
   vpc_security_group_ids = module.security_group.security_id
   region                 = var.region
   tags = {
-    "Name" = "windows-${local.name}-${module.unique_name.unique}"
+    "Name" = "EC2-Amazon-${local.name}"
   }
   user_data = file("${path.module}/scripts/amazon-linux.sh")
 }
@@ -54,6 +54,20 @@ module "security_group" {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description = "Allows HTTP traffic"
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description = "Allow ICMP traffic"
+      from_port   = -1
+      to_port     = -1
+      protocol    = "icmp"
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
