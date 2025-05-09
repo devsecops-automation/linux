@@ -8,7 +8,7 @@ module "ubuntu" {
   tags = {
     "Name" = "EC2-Ubuntu-${local.name}"
   }
-  user_data = file("${path.module}/scripts/ubuntu.sh")
+  user_data = file("${path.module}/scripts/jenkins.sh")
 }
 
 module "amazon-linux" {
@@ -57,17 +57,17 @@ module "security_group" {
       cidr_blocks = ["0.0.0.0/0"]
     },
     {
-      description = "Allows HTTP traffic"
+      description = "Allow HTTP traffic"
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     },
     {
-      description = "Allow ICMP traffic"
-      from_port   = -1
-      to_port     = -1
-      protocol    = "icmp"
+      description = "Allow Jenkins traffic"
+      from_port   = 8080
+      to_port     = 8080
+      protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
